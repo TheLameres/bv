@@ -1,12 +1,24 @@
-public class RussianPhoneValidator implements jakarta.validation.ConstraintValidator<thelameres.bv.RussianPhone, java.lang.CharSequence> {
-    @Override
-    public void initialize(thelameres.bv.RussianPhone constraintAnnotation) {
-        // TODO do initialization
-    }
-    
-    @Override
-    public boolean isValid(java.lang.CharSequence value, jakarta.validation.ConstraintValidatorContext context) {
-        // TODO write validation logic
-        return false;
-    }
+package thelameres.bv.validator.constraint_validator;
+
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
+import java.util.regex.Pattern;
+import thelameres.bv.validator.annotation.RussianPhone;
+
+public class RussianPhoneValidator implements ConstraintValidator<RussianPhone, String> {
+
+  private static final Pattern PATTERN =
+      Pattern.compile("^(\\+7|8)\\d{10}$");
+
+  @Override
+  public void initialize(RussianPhone constraintAnnotation) {
+  }
+
+  @Override
+  public boolean isValid(String value, ConstraintValidatorContext context) {
+    if (value == null) {return true;}
+
+    var cleaned = value.replaceAll("[\\s\\-()]", "");
+    return PATTERN.matcher(cleaned).matches();
+  }
 }
